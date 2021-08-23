@@ -70,10 +70,11 @@ class Portal:
     def _register_course(self, code):
         payload = {
             'st_reg_course': code,
-            'addpassline': self._solve_cs_captcha(),
+            # 'addpassline': self._solve_cs_captcha(),
             'st_course_add': 'درس را اضافه کن'
         }
         while True:
+            payload['addpassline'] = self._solve_cs_captcha()
             resp = self._re.post(self._reg_page, headers=self._headers, data=payload)
             # print(resp.text.strip())
             if resp.status_code == 200 and (not resp.text.__contains__("فيلد حروف تصوير معتبر")):
