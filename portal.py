@@ -25,7 +25,8 @@ class Portal:
             "http": "socks5://127.0.0.1:8080",
             "https": "socks5://127.0.0.1:8080",
         }
-        self._login_page = 'https://portal.aut.ac.ir/aportal/login.jsp'
+        self._login_page = 'https://portal.aut.ac.ir/aportal/showLogin.jsp'
+        self._login_submit_page = 'https://portal.aut.ac.ir/aportal/login.jsp'
         self._captcha_page = 'https://portal.aut.ac.ir/aportal/PassImageServlet'
         self._cs_page = 'https://portal.aut.ac.ir/aportal/regadm/student.portal/student.portal.jsp?action=edit&st_info=register&st_sub_info=u_mine_all'
         self._reg_page = 'https://portal.aut.ac.ir/aportal/regadm/student.portal/student.portal.jsp?action=apply_reg&st_info=add'
@@ -38,12 +39,21 @@ class Portal:
             "password": pazz,
             "passline": ""
         }
-        resp = self._re.post(self._login_page, headers=self._headers, data=payload, allow_redirects=False)
-
+        
         while True:
+            resp = self._re.get(self._login_page, headers={
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64; rv:56.0) Gecko/20100101 Firefox/56.0'
+            }, data=payload, allow_redirects=False)
+
             payload["passline"] = self._solve_login_captcha()
-            resp = self._re.post(self._login_page, headers=self._headers, data=payload, allow_redirects=False)
+            resp = self._re.post(self._login_submit_page, headers=self._headers, data=payload, allow_redirects=False)
             text = resp.text
+
+            if resp.status_code == 302:  # not correct or not opened
+                Portal.print_with_time("not opened yet or 503")
+                time.sleep(sleep_seconds)
+                continue
+            return True
 
             if text.__contains__("اطلاعات وارد شده نامعتبر"):
                 return False
@@ -123,7 +133,7 @@ class Portal:
     
 
     def _solve_login_captcha(self):
-        return self._solve_captcha(5)
+        return self._solve_captcha(7)
 
 
     def _solve_cs_captcha(self):
