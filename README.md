@@ -25,7 +25,7 @@ Course codes can be obtained from the value attribute of courses' checkbox in th
 
 > **Note**
 > 
-> This script was designed when portal didn't have single sign-on (new login) feature. I have changed it to work with the recent login flow changes, however, it doesn't work optimal.
+> This script was designed when portal didn't have single sign-on (new login) feature. I have changed it to work with the recent login flow changes, however, it isn't optimal.
 > 
 > Be extra careful with your username and password. The script doesn't report correct error if the credentials are wrong (due to login changes).
 
