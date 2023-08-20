@@ -32,5 +32,5 @@ def pred_captcha(img, words):
     #     cv2.imshow('captcha', part)
     #     cv2.waitKey(0)
 
-    prediction = model.predict(parts)
+    prediction = model.predict(parts, verbose=0)
     return ''.join(lb.inverse_transform(prediction))
