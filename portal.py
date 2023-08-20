@@ -53,6 +53,7 @@ class Portal:
                 Portal.print_with_time("not opened yet or 503")
                 time.sleep(sleep_seconds)
                 continue
+            Portal.print_with_time("Logged in.")
             return True
 
             if text.__contains__("اطلاعات وارد شده نامعتبر"):
